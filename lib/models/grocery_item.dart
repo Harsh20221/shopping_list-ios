@@ -1,8 +1,9 @@
-import 'package:flutter/foundation.dart';
 
+import 'package:shopping_list/models/category.dart';
 class GroceryItem  {
 const GroceryItem({
-required this.id,required
+required this.id,
+required
  this.category, required
 this.quantity, required
 this.name
