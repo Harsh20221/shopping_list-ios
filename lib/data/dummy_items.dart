@@ -2,7 +2,7 @@ import 'package:shopping_list/models/grocery_item.dart';
 import 'package:shopping_list/models/category.dart' ;
 import 'package:shopping_list/data/categories.dart';
 
-final groceryItems = [
+final groceryItems = [  //! Do not use const with this use final only 
   GroceryItem(
       id: 'a',
       name: 'Milk',

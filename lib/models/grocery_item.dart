@@ -1,6 +1,7 @@
 
 import 'package:shopping_list/models/category.dart';
-class GroceryItem  {
+class GroceryItem  { //!!! Make sure to not writethe name GroceryItem as GroceryItems else it'll give errors
+
 const GroceryItem({
 required this.id,
 required
