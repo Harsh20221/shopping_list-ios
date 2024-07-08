@@ -31,15 +31,24 @@ class _NewItemState extends State<NewItem> {
                   maxLength: 50,
                   decoration: const InputDecoration(label: Text('Name')),
                   validator: (value) {
-                    return 'GG';
+                if(value==null||value.isEmpty||value.trim().length<=1||value.trim().length>50){
+                  return 'Error -- Please Enter a name Between 1-50 Charecters';
+                }
+return null; ///!! Make sure you write this return null because validator must return null in case of a succcessful execution
+    
                   },
                 ),
-                Row(crossAxisAlignment: CrossAxisAlignment.end, children: [ //!! Make sure to make crossaxisalignment = crossaxisalignment.end 
-                ///!!else the form fields will not align
+                Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                  //!! Make sure to make crossaxisalignment = crossaxisalignment.end
+                  ///!!else the form fields will not align
                   Expanded(
                       child: TextFormField(
                     decoration: const InputDecoration(label: Text("Quantity")),
-                    initialValue: '1',
+                    initialValue: '1', validator: (value) {if(value==null|| int.tryParse(value)==null||int.tryParse(value)!<=0){
+                      return ' Please Enter a Number greater than 0 ';
+              
+                    }
+                    return null;},
                   )),
                   const SizedBox(width: 8),
                   Expanded(
@@ -63,8 +72,19 @@ class _NewItemState extends State<NewItem> {
                             ],
                           ))
                   ], onChanged: (value) {}))
-                ]),const SizedBox(height: 8,),Row(mainAxisAlignment: MainAxisAlignment.end,children: [TextButton(onPressed: (){}, child: const Text("Reset")),ElevatedButton(onPressed: (){}, child:const Text("Submit"))],)
-             ],
+                ]),
+                const SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(onPressed: () {}, child: const Text("Reset")),
+                    ElevatedButton(
+                        onPressed: () {}, child: const Text("Submit"))
+                  ],
+                )
+              ],
             ))));
   }
 }
