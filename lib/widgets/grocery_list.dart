@@ -17,7 +17,7 @@ class _GroceryListState extends State<GroceryList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Your Groceriers"),actions: [IconButton(onPressed: (){}, icon:const Icon(Icons.shopping_basket))],),
+      appBar: AppBar(title: Text("Your Groceriers"),actions: [IconButton(onPressed: (){_addItem();}, icon:const Icon(Icons.shopping_basket))],),
       body: ListView.builder(
         //? ListView.builder is used to create a scrollable list of items
         itemBuilder: (ctx, index) => ListTile(
