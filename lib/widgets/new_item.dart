@@ -16,9 +16,16 @@ class _NewItemState extends State<NewItem> {
         appBar: AppBar(
           title: const Text("Add a new item"),
         ),
-        body: const Padding(
-          padding: EdgeInsets.all(12),
-          child: Text("The List will be placed Here "),
-        ));
+        body: Padding(
+            padding: EdgeInsets.all(12),
+            child: Form(
+                child: Column(
+              children: [
+                TextFormField( ///We are using this TextFormField to innovatively Register the user shopping list Text 
+                  maxLength: 50,
+                  decoration: const InputDecoration(label: Text('Name')),
+                validator:(value){return 'GG';} ,)
+              ],
+            ))));
   }
 }
