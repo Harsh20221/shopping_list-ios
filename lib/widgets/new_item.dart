@@ -15,10 +15,18 @@ class NewItem extends StatefulWidget {
 }
 
 class _NewItemState extends State<NewItem> {
+  ///////the line final _formkey=GlobalKey<FormState>(); declares a final variable _formkey and initializes it
+  /// with a new GlobalKey of type FormState. In Flutter, a GlobalKey is a unique identifier for widgets, 
+  /// allowing you to access their state and methods. By specifying FormState, this key will be used to interact with a Form widget's state, 
+  /// such as validating the form or saving its data.
  final _formkey=GlobalKey<FormState>();
-
+///?Next, the function _saveItem() is defined. Inside this function, _formkey.currentState!.validate(); is called.
+///? This line accesses the current state of the form associated with _formkey and calls its validate() method.
+///?  The validate() method checks each FormField widget within the form and runs its validation logic,
+///?  returning true if all fields are valid and false otherwise. The use of the exclamation mark (!) after currentState is a null assertion operator,
+///?  which tells Dart that you are certain currentState is not null at this point.
 void _saveItem(){
-  _formkey.currentState!.validate();
+  _formkey.currentState!.validate(); ///? 
 }
 
 
@@ -31,7 +39,8 @@ void _saveItem(){
         body: Padding(
             padding: const EdgeInsets.all(12),
             child: Form(
-                child: Column(
+              key: _formkey,/////!!!!!! VERY IMPORTANT --- DO NOT FORGET TO ATTACH THE KEY HERE OR ELSE CODE WILL NOT EXECUTE 
+                child: Column( crossAxisAlignment: CrossAxisAlignment.end, //todo: Do not forget this alignment
               children: [
                 TextFormField(
                   ///We are using this TextFormField to innovatively Register the user shopping list Text
@@ -45,13 +54,14 @@ return null; ///!! Make sure you write this return null because validator must r
     
                   },
                 ),
-                Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                Row(crossAxisAlignment: CrossAxisAlignment.end ,children: [
                   //!! Make sure to make crossaxisalignment = crossaxisalignment.end
                   ///!!else the form fields will not align
                   Expanded(
-                      child: TextFormField(
+                      child: TextFormField( 
                     decoration: const InputDecoration(label: Text("Quantity")),
-                    initialValue: '1', validator: (value) {if(value==null|| int.tryParse(value)==null||int.tryParse(value)!<=0){
+                    initialValue: '1', validator: (value) {if(value==null||value.isEmpty
+                    || int.tryParse(value)==null||int.tryParse(value)!<=0){
                       return ' Please Enter a Number greater than 0 ';
               
                     }
