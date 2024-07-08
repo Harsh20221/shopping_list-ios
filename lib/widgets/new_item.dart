@@ -15,6 +15,13 @@ class NewItem extends StatefulWidget {
 }
 
 class _NewItemState extends State<NewItem> {
+ final _formkey=GlobalKey<FormState>();
+
+void _saveItem(){
+  _formkey.currentState!.validate();
+}
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +88,7 @@ return null; ///!! Make sure you write this return null because validator must r
                   children: [
                     TextButton(onPressed: () {}, child: const Text("Reset")),
                     ElevatedButton(
-                        onPressed: () {}, child: const Text("Submit"))
+                        onPressed: _saveItem, child: const Text("Submit"))
                   ],
                 )
               ],
