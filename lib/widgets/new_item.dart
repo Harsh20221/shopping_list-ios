@@ -1,6 +1,7 @@
 ////* This file Contains Widget Screen for the New Item Page
 import 'package:flutter/material.dart';
 import 'package:shopping_list/data/categories.dart';
+
 /* import 'package:shopping_list/models/category.dart'; */
 /////!!!!!!!!!!!VERY IMPORTANT RULE IN FLUTTER -- MAKE SURE THE TEXT WIDGET IS NOT INSIDE ROW WIDGET
 ///! Because both stretches indefinately but in case we need to do it then we enclose the other Widget with Expanded
@@ -21,7 +22,7 @@ class _NewItemState extends State<NewItem> {
           title: const Text("Add a new item"),
         ),
         body: Padding(
-            padding: EdgeInsets.all(12),
+            padding: const EdgeInsets.all(12),
             child: Form(
                 child: Column(
               children: [
@@ -33,26 +34,32 @@ class _NewItemState extends State<NewItem> {
                     return 'GG';
                   },
                 ),
-                Row(crossAxisAlignment: CrossAxisAlignment.end,children: [
+                Row(crossAxisAlignment: CrossAxisAlignment.end, children: [ //!! Make sure to make crossaxisalignment = crossaxisalignment.end 
+                ///!!else the form fields will not align
                   Expanded(
                       child: TextFormField(
-                    decoration: InputDecoration(label: Text("Quantity")),
+                    decoration: const InputDecoration(label: Text("Quantity")),
                     initialValue: '1',
                   )),
                   const SizedBox(width: 8),
-              Expanded(child:DropdownButtonFormField(items: [
-                    for (final category in categories.entries)
+                  Expanded(
+                      child: DropdownButtonFormField(items: [
+                    for (final category in categories
+                        .entries) //? We need to convert this category items to category.entries to make that iterable
                       DropdownMenuItem(
                           value: category.value,
-
-                          ///?
                           child: Row(
                             children: [
                               Container(
+                                //? This container displays the category icon color
                                 width: 16,
                                 height: 16,
                                 color: category.value.color,
-                              )
+                              ),
+                              const SizedBox(
+                                width: 6,
+                              ),
+                              Text(category.value.title)
                             ],
                           ))
                   ], onChanged: (value) {}))
