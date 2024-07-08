@@ -13,9 +13,5 @@ final groceryItems = [  //! Do not use const with this use final only
       name: 'Bananas',
       quantity: 5,
       category: categories[Categories.fruit]! ),
-  GroceryItem(
-      id: 'c',
-      name: 'Beef Steak',
-      quantity: 1,
-      category: categories[Categories.meat]! ),
+
 ];

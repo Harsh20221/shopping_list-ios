@@ -1,4 +1,6 @@
 ////* This file Contains Widget Screen for the New Item Page
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:shopping_list/data/categories.dart';
 
@@ -20,13 +22,16 @@ class _NewItemState extends State<NewItem> {
   /// allowing you to access their state and methods. By specifying FormState, this key will be used to interact with a Form widget's state, 
   /// such as validating the form or saving its data.
  final _formkey=GlobalKey<FormState>();
+ var _enteredname ='';
+ var _enteredQuantity='';
 ///?Next, the function _saveItem() is defined. Inside this function, _formkey.currentState!.validate(); is called.
 ///? This line accesses the current state of the form associated with _formkey and calls its validate() method.
 ///?  The validate() method checks each FormField widget within the form and runs its validation logic,
 ///?  returning true if all fields are valid and false otherwise. The use of the exclamation mark (!) after currentState is a null assertion operator,
 ///?  which tells Dart that you are certain currentState is not null at this point.
 void _saveItem(){
-  _formkey.currentState!.validate(); ///? 
+  _formkey.currentState!.validate(); 
+  _formkey.currentState!.save();
 }
 
 
@@ -53,7 +58,7 @@ void _saveItem(){
 return null; ///!! Make sure you write this return null because validator must return null in case of a succcessful execution
     
                   },
-                ),
+             onSaved:(value){ _enteredname = value!;}    ),
                 Row(crossAxisAlignment: CrossAxisAlignment.end ,children: [
                   //!! Make sure to make crossaxisalignment = crossaxisalignment.end
                   ///!!else the form fields will not align
@@ -66,7 +71,7 @@ return null; ///!! Make sure you write this return null because validator must r
               
                     }
                     return null;},
-                  )),
+                onSaved: (value) {_enteredQuantity=value!;}, )),
                   const SizedBox(width: 8),
                   Expanded(
                       child: DropdownButtonFormField(items: [
@@ -96,7 +101,7 @@ return null; ///!! Make sure you write this return null because validator must r
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    TextButton(onPressed: () {}, child: const Text("Reset")),
+                    TextButton(onPressed:(){_formkey.currentState!.reset(); }, child: const Text("Reset")),
                     ElevatedButton(
                         onPressed: _saveItem, child: const Text("Submit"))
                   ],
