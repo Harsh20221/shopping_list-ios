@@ -23,7 +23,7 @@ class _NewItemState extends State<NewItem> {
   /// such as validating the form or saving its data.
  final _formkey=GlobalKey<FormState>();
  var _enteredname ='';
- var _enteredQuantity='';
+ var _enteredQuantity=1;
 ///?Next, the function _saveItem() is defined. Inside this function, _formkey.currentState!.validate(); is called.
 ///? This line accesses the current state of the form associated with _formkey and calls its validate() method.
 ///?  The validate() method checks each FormField widget within the form and runs its validation logic,
@@ -65,13 +65,13 @@ return null; ///!! Make sure you write this return null because validator must r
                   Expanded(
                       child: TextFormField( 
                     decoration: const InputDecoration(label: Text("Quantity")),
-                    initialValue: '1', validator: (value) {if(value==null||value.isEmpty
+                    initialValue: _enteredQuantity.toString(), validator: (value) {if(value==null||value.isEmpty
                     || int.tryParse(value)==null||int.tryParse(value)!<=0){
                       return ' Please Enter a Number greater than 0 ';
               
                     }
                     return null;},
-                onSaved: (value) {_enteredQuantity=value!;}, )),
+                onSaved: (value) {_enteredQuantity=int.parse(value!);}, )),//!! Make sure to use the int.parse function to get the initial value in integer form 
                   const SizedBox(width: 8),
                   Expanded(
                       child: DropdownButtonFormField(items: [
