@@ -116,7 +116,7 @@ class _NewItemState extends State<NewItem> {
                                         ],
                                       ))
                               ],
-                              onChanged: (value) { setState(() { //!! We eed t call setstate as the the selectedvalue changes gradually 
+                              onChanged: (value) { setState(() { //!! We need to call setstate as the the selectedvalue changes gradually 
                                  _selectedcategories = value!;
                               });
                                
