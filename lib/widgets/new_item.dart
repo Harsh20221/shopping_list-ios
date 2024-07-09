@@ -1,5 +1,5 @@
 ////* This file Contains Widget Screen for the New Item Page
-
+import 'package:http/http.dart' as http ; 
 import 'package:flutter/material.dart';
 import 'package:shopping_list/data/categories.dart';
 import 'package:shopping_list/models/category.dart';
@@ -35,6 +35,8 @@ class _NewItemState extends State<NewItem> {
   void _saveItem() {
     _formkey.currentState!.validate();
     _formkey.currentState!.save();
+    final url = Uri.https('https://console.firebase.google.com/u/0/project/shoppinglist-72341/database/shoppinglist-72341-default-rtdb/data/~2F');
+    http.post(url);
     Navigator.of(context).pop(GroceryItem(id:DateTime.now().toString(), category:_selectedcategories!, quantity: _enteredQuantity, name:_enteredname)); //? Here we are passing the user Entered values to the form 
   }
 
