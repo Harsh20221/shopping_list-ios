@@ -1,9 +1,9 @@
 ////* This file Contains Widget Screen for the New Item Page
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:shopping_list/data/categories.dart';
 import 'package:shopping_list/models/category.dart';
+import 'package:shopping_list/models/grocery_item.dart';
 
 /* import 'package:shopping_list/models/category.dart'; */
 /////!!!!!!!!!!!VERY IMPORTANT RULE IN FLUTTER -- MAKE SURE THE TEXT WIDGET IS NOT INSIDE ROW WIDGET
@@ -35,6 +35,7 @@ class _NewItemState extends State<NewItem> {
   void _saveItem() {
     _formkey.currentState!.validate();
     _formkey.currentState!.save();
+    Navigator.of(context).pop(GroceryItem(id:DateTime.now().toString(), category:_selectedcategories!, quantity: _enteredQuantity, name:_enteredname)); //? Here we are passing the user Entered values to the form 
   }
 
   @override
