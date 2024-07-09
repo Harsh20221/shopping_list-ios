@@ -18,7 +18,10 @@ class _GroceryListState extends State<GroceryList> {
 
   void _removeitem(GroceryItem item) {
     ///*** This Void Function wll help us dismiss list items throug swipe  */
-    _groceryitems.remove(item);
+    setState(() { ///!!!!!!!!!!!!!! Very important to enclose this remove item inside setState else the items will not get actually removed and will give us errors 
+       _groceryitems.remove(item);
+    });
+   
   }
 
   void _addItem() async {
@@ -53,7 +56,8 @@ class _GroceryListState extends State<GroceryList> {
         //? ListView.builder is used to create a scrollable list of items
         itemBuilder: (ctx, index) => Dismissible(  //!! Make sure to enclose the entire function inside Dismissible 
           key: ValueKey(_groceryitems[index].id), //! Do not forget to assign key , this key will be used to track the item
-          onDismissed: (direction) => _removeitem, //? definded in line 19 this function helps us remove list items on swiping the list item right or left 
+          onDismissed: (direction) => _removeitem(_groceryitems[index]),///!!! Very VERY Imp to write _groceryitems[index] inside the remove method else it will not remove the item  
+          //? definded in line 19 this function helps us remove list items on swiping the list item right or left 
           child: ListTile(
               ///? ListTile is a single fixed-height row that typically contains some text as well as a leading or trailing icon.
               title: Text(_groceryitems[index]
