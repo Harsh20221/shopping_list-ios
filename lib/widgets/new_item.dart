@@ -35,20 +35,24 @@ class _NewItemState extends State<NewItem> {
   ///?  The validate() method checks each FormField widget within the form and runs its validation logic,
   ///?  returning true if all fields are valid and false otherwise. The use of the exclamation mark (!) after currentState is a null assertion operator,
   ///?  which tells Dart that you are certain currentState is not null at this point.
-  void _saveItem() {
+  void _saveItem() async {
     _formkey.currentState!.validate();
     _formkey.currentState!.save();
     final url = Uri.https(
-        'https://shoppinglist-72341-default-rtdb.asia-southeast1.firebasedatabase.app/', //!!! Make sure you copy the correct url else your data will not get pushed into the firebase server
+        'shoppinglist-72341-default-rtdb.asia-southeast1.firebasedatabase.app', //!! Make sure no charecter is in the url link after .app  make sure the url is not like .app/ or anything should not be after the .app
+         //!!! Make sure you copy the correct url else your data will not get pushed into the firebase server
         'shoppinglist.json');
-    http.post(url,headers: {
+   final response = await http.post(url,headers: {
       'Content-Type':'application/json'
     },body: json.encode({ ////?This Method Here is REponsible for encoding of the message 
       'name':_enteredname,
       'quantity':_enteredQuantity,
-      'category':_selectedcategories,
+      'category':_selectedcategories?.title,
 
     }));
+    if(!context.mounted){
+      return;
+    }
     Navigator.of(context).pop(GroceryItem(
         id: DateTime.now().toString(),
         category: _selectedcategories!,
