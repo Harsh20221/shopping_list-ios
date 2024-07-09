@@ -50,7 +50,9 @@ class _NewItemState extends State<NewItem> {
       'category':_selectedcategories?.title,
 
     }));
-    if(!context.mounted){
+    if(!context.mounted){ //?The line if (!context.mounted) { return; } was added to your code 
+    ///?to ensure that any subsequent operations are only performed if the widget 
+    ///?is still part of the widget tree
       return;
     }
     Navigator.of(context).pop(GroceryItem(
