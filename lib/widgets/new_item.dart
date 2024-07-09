@@ -1,6 +1,6 @@
 ////* This file Contains Widget Screen for the New Item Page
 import 'dart:convert';
-import 'dart:io';
+/* mport 'dart:io'; */
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -39,8 +39,8 @@ class _NewItemState extends State<NewItem> {
     _formkey.currentState!.validate();
     _formkey.currentState!.save();
     final url = Uri.https(
-        'https://console.firebase.google.com/u/0/project/shoppinglist-72341/database/shoppinglist-72341-default-rtdb/data/~2F',
-        'shopping-list.json');
+        'https://shoppinglist-72341-default-rtdb.asia-southeast1.firebasedatabase.app/', //!!! Make sure you copy the correct url else your data will not get pushed into the firebase server
+        'shoppinglist.json');
     http.post(url,headers: {
       'Content-Type':'application/json'
     },body: json.encode({ ////?This Method Here is REponsible for encoding of the message 
