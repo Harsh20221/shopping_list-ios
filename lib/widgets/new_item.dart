@@ -1,5 +1,8 @@
 ////* This file Contains Widget Screen for the New Item Page
-import 'package:http/http.dart' as http ; 
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shopping_list/data/categories.dart';
 import 'package:shopping_list/models/category.dart';
@@ -35,9 +38,23 @@ class _NewItemState extends State<NewItem> {
   void _saveItem() {
     _formkey.currentState!.validate();
     _formkey.currentState!.save();
-    final url = Uri.https('https://console.firebase.google.com/u/0/project/shoppinglist-72341/database/shoppinglist-72341-default-rtdb/data/~2F');
-    http.post(url);
-    Navigator.of(context).pop(GroceryItem(id:DateTime.now().toString(), category:_selectedcategories!, quantity: _enteredQuantity, name:_enteredname)); //? Here we are passing the user Entered values to the form 
+    final url = Uri.https(
+        'https://console.firebase.google.com/u/0/project/shoppinglist-72341/database/shoppinglist-72341-default-rtdb/data/~2F',
+        'shopping-list.json');
+    http.post(url,headers: {
+      'Content-Type':'application/json'
+    },body: json.encode({ ////?This Method Here is REponsible for encoding of the message 
+      'name':_enteredname,
+      'quantity':_enteredQuantity,
+      'category':_selectedcategories,
+
+    }));
+    Navigator.of(context).pop(GroceryItem(
+        id: DateTime.now().toString(),
+        category: _selectedcategories!,
+        quantity: _enteredQuantity,
+        name:
+            _enteredname)); //? Here we are passing the user Entered values to the form
   }
 
   @override
@@ -119,10 +136,11 @@ class _NewItemState extends State<NewItem> {
                                         ],
                                       ))
                               ],
-                              onChanged: (value) { setState(() { //!! We need to call setstate as the the selectedvalue changes gradually 
-                                 _selectedcategories = value!;
-                              });
-                               
+                              onChanged: (value) {
+                                setState(() {
+                                  //!! We need to call setstate as the the selectedvalue changes gradually
+                                  _selectedcategories = value!;
+                                });
                               }))
                     ]),
                     const SizedBox(
