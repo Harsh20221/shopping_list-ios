@@ -54,13 +54,13 @@ class _GroceryListState extends State<GroceryList> {
   void _removeitem(GroceryItem item) {
     ///*** This Void Function wll help us dismiss list items throug swipe  */
     setState(() {
-      ///!!!!!!!!!!!!!! Very important to enclose this remove item inside setState else the items will not get actually removed and will give us errors
+      ///!!! Very important to enclose this remove item inside setState else the items will not get actually removed and will give us errors
       _groceryitems.remove(item);
     });
   }
 
   void _addItem() async {
-    await Navigator.of(context)
+   final newItem= await Navigator.of(context)
         .push<GroceryItem>(//!! Here This line newItem=await Navigator.....
             ///!!will be responsible for navigating to next screen and
             ///! will also hold the data  Entered in the next screen
@@ -70,7 +70,9 @@ class _GroceryListState extends State<GroceryList> {
     setState(() {
       _groceryitems.add(newItem);
     }); */
-    _loaditems();
+    setState(() {
+      _groceryitems.add(newItem!);
+    });
   }
 
   @override

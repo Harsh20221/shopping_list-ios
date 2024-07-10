@@ -2,6 +2,7 @@
 import 'dart:convert';
 /* mport 'dart:io'; */
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shopping_list/data/categories.dart';
@@ -28,7 +29,7 @@ class _NewItemState extends State<NewItem> {
   final _formkey = GlobalKey<FormState>();
   var _enteredname = '';
   var _enteredQuantity = 1;
-  var _selectedcategories = categories[Categories.convenience];
+ var _selectedcategories = categories[Categories.convenience];
 
   ///?Next, the function _saveItem() is defined. Inside this function, _formkey.currentState!.validate(); is called.
   ///? This line accesses the current state of the form associated with _formkey and calls its validate() method.
@@ -51,18 +52,22 @@ class _NewItemState extends State<NewItem> {
           'quantity': _enteredQuantity,
           'category': _selectedcategories?.title,
         }));
-    if (!context.mounted) {
+  
+final Map<String,dynamic> resdata=json.decode(response.body);
+  if (!context.mounted) {
       //?The line if (!context.mounted) { return; } was added to your code
       ///?to ensure that any subsequent operations are only performed if the widget
       ///?is still part of the widget tree
       return;
     }
-    Navigator.of(context).pop(GroceryItem(
-        id: DateTime.now().toString(),
-        category: _selectedcategories!,
-        quantity: _enteredQuantity,
-        name:
-            _enteredname)); //? Here we are passing the user Entered values to the form
+    Navigator.of(context).pop(GroceryItem(id: resdata['name'], category: _selectedcategories!, quantity: _enteredQuantity, name: _enteredname));
+
+
+//? Here we are passing the user Entered values to the form
+
+
+
+
   }
 
   @override
