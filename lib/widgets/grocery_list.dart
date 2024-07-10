@@ -16,6 +16,7 @@ class GroceryList extends StatefulWidget {
 }
 
 class _GroceryListState extends State<GroceryList> {
+  var isloading = true;
   List<GroceryItem> _groceryitems =
       []; //!!! Make sure to store the grocery items entered by user in this list
   @override
@@ -48,6 +49,7 @@ class _GroceryListState extends State<GroceryList> {
     }
     setState(() {
       _groceryitems = loadedItems;
+      isloading=false;
     });
   }
 
@@ -77,18 +79,13 @@ class _GroceryListState extends State<GroceryList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Your Groceriers"),
-        actions: [
-          IconButton(
-              onPressed: () {
-                _addItem();
-              },
-              icon: const Icon(Icons.shopping_basket))
-        ],
-      ),
-      body: ListView.builder(
+    Widget content = const Center(child: Text('No items Added yet'));
+    
+    if(isloading){
+      content=const Center(child: CircularProgressIndicator());
+    }
+    if(_groceryitems.isNotEmpty){
+    content =ListView.builder(
         //? ListView.builder is used to create a scrollable list of items
         itemBuilder: (ctx, index) => Dismissible(
           //!! Make sure to enclose the entire function inside Dismissible
@@ -111,7 +108,20 @@ class _GroceryListState extends State<GroceryList> {
               trailing: Text(_groceryitems[index].quantity.toString())),
         ), //!!Make sure to Manually convert this into string
         itemCount: _groceryitems.length,
-      ), //? Here leading will display a little Category Icon for all the Categories
-    );
-  }
-}
+      ); //? Here leading will display a little Category Icon for all the Categories
+
+    }
+      return   Scaffold(
+      appBar: AppBar(
+        title: const Text("Your Groceriers"),
+        actions: [
+          IconButton(
+              onPressed: () {
+                _addItem();
+              },
+              icon: const Icon(Icons.shopping_basket))
+        ],
+      ),
+      body: content);
+   // Add this line to ensure a Widget is always returned
+}}

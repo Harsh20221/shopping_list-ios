@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 /* mport 'dart:io'; */
 
@@ -8,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:shopping_list/data/categories.dart';
 import 'package:shopping_list/models/category.dart';
 import 'package:shopping_list/models/grocery_item.dart';
+
 ///* This file Contains Widget Screen for the New Item Page///*
 /* import 'package:shopping_list/models/category.dart'; */
 /////!!!!!!!!!!!VERY IMPORTANT RULE IN FLUTTER -- MAKE SURE THE TEXT WIDGET IS NOT INSIDE ROW WIDGET
@@ -26,10 +26,11 @@ class _NewItemState extends State<NewItem> {
   /// with a new GlobalKey of type FormState. In Flutter, a GlobalKey is a unique identifier for widgets,
   /// allowing you to access their state and methods. By specifying FormState, this key will be used to interact with a Form widget's state,
   /// such as validating the form or saving its data.
+  var issending = false;
   final _formkey = GlobalKey<FormState>();
   var _enteredname = '';
   var _enteredQuantity = 1;
- var _selectedcategories = categories[Categories.convenience];
+  var _selectedcategories = categories[Categories.convenience];
 
   ///?Next, the function _saveItem() is defined. Inside this function, _formkey.currentState!.validate(); is called.
   ///? This line accesses the current state of the form associated with _formkey and calls its validate() method.
@@ -39,6 +40,9 @@ class _NewItemState extends State<NewItem> {
   void _saveItem() async {
     _formkey.currentState!.validate();
     _formkey.currentState!.save();
+    setState(() {
+      issending = true; ///? After saving item we are making issending true to disable the loading screen
+    }); 
     final url = Uri.https(
         'shoppinglist-72341-default-rtdb.asia-southeast1.firebasedatabase.app', //!!Veryimp error--- Make sure no charecter is in the url link after .app
         ///!! make sure the url is not like .app/ or anything should not be after the .app
@@ -52,22 +56,21 @@ class _NewItemState extends State<NewItem> {
           'quantity': _enteredQuantity,
           'category': _selectedcategories?.title,
         }));
-  
-final Map<String,dynamic> resdata=json.decode(response.body);
-  if (!context.mounted) {
+
+    final Map<String, dynamic> resdata = json.decode(response.body);
+    if (!context.mounted) {
       //?The line if (!context.mounted) { return; } was added to your code
       ///?to ensure that any subsequent operations are only performed if the widget
       ///?is still part of the widget tree
       return;
     }
-    Navigator.of(context).pop(GroceryItem(id: resdata['name'], category: _selectedcategories!, quantity: _enteredQuantity, name: _enteredname));
-
+    Navigator.of(context).pop(GroceryItem(
+        id: resdata['name'],
+        category: _selectedcategories!,
+        quantity: _enteredQuantity,
+        name: _enteredname));
 
 //? Here we are passing the user Entered values to the form
-
-
-
-
   }
 
   @override
@@ -168,7 +171,16 @@ final Map<String,dynamic> resdata=json.decode(response.body);
                             },
                             child: const Text("Reset")),
                         ElevatedButton(
-                            onPressed: _saveItem, child: const Text("Submit"))
+                            onPressed: issending ? null : _saveItem, //? Here we are checking if issending variable is true and if it is false 
+                            ///? Then we are Disabling submit button and if not then we are letting it submit the request
+                  
+                            child: issending
+                                ? const SizedBox( height: 16, //? Here ere are changing the button to display a progressbar until issending is  true 
+                                    width: 16,
+                                    child:  CircularProgressIndicator(),
+    
+                                  )
+                                : const Text("Submit"))
                       ],
                     )
                   ],
