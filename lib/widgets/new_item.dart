@@ -1,4 +1,4 @@
-////* This file Contains Widget Screen for the New Item Page///*
+
 import 'dart:convert';
 /* mport 'dart:io'; */
 
@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:shopping_list/data/categories.dart';
 import 'package:shopping_list/models/category.dart';
 import 'package:shopping_list/models/grocery_item.dart';
-
+///* This file Contains Widget Screen for the New Item Page///*
 /* import 'package:shopping_list/models/category.dart'; */
 /////!!!!!!!!!!!VERY IMPORTANT RULE IN FLUTTER -- MAKE SURE THE TEXT WIDGET IS NOT INSIDE ROW WIDGET
 ///! Because both stretches indefinately but in case we need to do it then we enclose the other Widget with Expanded
@@ -39,21 +39,22 @@ class _NewItemState extends State<NewItem> {
     _formkey.currentState!.validate();
     _formkey.currentState!.save();
     final url = Uri.https(
-        'shoppinglist-72341-default-rtdb.asia-southeast1.firebasedatabase.app', //!!Veryimp error--- Make sure no charecter is in the url link after .app 
+        'shoppinglist-72341-default-rtdb.asia-southeast1.firebasedatabase.app', //!!Veryimp error--- Make sure no charecter is in the url link after .app
         ///!! make sure the url is not like .app/ or anything should not be after the .app
-         //!!! Make sure you copy the correct url else your data will not get pushed into the firebase server
+        //!!! Make sure you copy the correct url else your data will not get pushed into the firebase server
         'shoppinglist.json');
-   final response = await http.post(url,headers: {
-      'Content-Type':'application/json'
-    },body: json.encode({ ////?This Method Here is REponsible for encoding of the message 
-      'name':_enteredname,
-      'quantity':_enteredQuantity,
-      'category':_selectedcategories?.title,
-
-    }));
-    if(!context.mounted){ //?The line if (!context.mounted) { return; } was added to your code 
-    ///?to ensure that any subsequent operations are only performed if the widget 
-    ///?is still part of the widget tree
+    final response = await http.post(url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          ////?This Method Here is REponsible for encoding of the message
+          'name': _enteredname,
+          'quantity': _enteredQuantity,
+          'category': _selectedcategories?.title,
+        }));
+    if (!context.mounted) {
+      //?The line if (!context.mounted) { return; } was added to your code
+      ///?to ensure that any subsequent operations are only performed if the widget
+      ///?is still part of the widget tree
       return;
     }
     Navigator.of(context).pop(GroceryItem(
