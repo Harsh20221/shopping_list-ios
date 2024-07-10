@@ -63,7 +63,7 @@ class _GroceryListState extends State<GroceryList> {
   void _removeitem (GroceryItem item) async{
     final index = groceryItems.indexOf(item); //?Here we are storing the index of the item to be removed
     ///*** This Void Function wll help us dismiss list items throug swipe  */
-  final url =  Uri.https('shoppinglist-72341-default-rtdb.asia-southeast1.firebasedatabase.app','shoppinglist${item.id}.json'); //? Here we are storing the url of the item to be removed along with the id of the item
+  final url =  Uri.https('shoppinglist-72341-default-rtdb.asia-southeast1.firebasedatabase.app','shoppinglist/${item.id}.json'); //? Here we are storing the url of the item to be removed along with the id of the item
    final response = await http.delete(url); //? Here we are deleting the item from the server
    if(response.statusCode>=404){ //? Here we are checking if the status code is greater than 404 then we will return the item back to the list
     setState(() {
