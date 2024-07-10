@@ -65,18 +65,25 @@ class _GroceryListState extends State<GroceryList> {
     ///*** This Void Function wll help us dismiss list items throug swipe  */
   final url =  Uri.https('shoppinglist-72341-default-rtdb.asia-southeast1.firebasedatabase.app','shoppinglist/${item.id}.json'); //? Here we are storing the url of the item to be removed along with the id of the item
    final response = await http.delete(url); //? Here we are deleting the item from the server
+   
+   ///**Error Condition  */
    if(response.statusCode>=404){ //? Here we are checking if the status code is greater than 404 then we will return the item back to the list
     setState(() {
      const Text('Failed to delete item'); //? Here we are displaying a message if the item is not deleted
       _groceryitems.insert(index, item);
     });
+  if(response.body=='null'){ //? Here we are checking if the body of the response is null then we will return the item back to the list it'll fix infinite loading when we delete all items
+    setState(() {
+      isloading=false;
+    });
+  
    }
 
     setState(() { ///// Whenever we are updating the UI we use setState that's why we have written setState here because we are updating Ui here
       ///!!! Very important to enclose this remove item inside setState else the items will not get actually removed and will give us errors
       _groceryitems.remove(item);
     });
-  }
+  }}
 
   void _addItem() async {
    final newItem= await Navigator.of(context)
@@ -101,6 +108,8 @@ class _GroceryListState extends State<GroceryList> {
     if(isloading){
       content=const Center(child: CircularProgressIndicator());
     }
+
+
     if(_groceryitems.isNotEmpty){
     content =ListView.builder(
         //? ListView.builder is used to create a scrollable list of items
