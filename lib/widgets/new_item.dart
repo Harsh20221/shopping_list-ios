@@ -39,7 +39,8 @@ class _NewItemState extends State<NewItem> {
     _formkey.currentState!.validate();
     _formkey.currentState!.save();
     final url = Uri.https(
-        'shoppinglist-72341-default-rtdb.asia-southeast1.firebasedatabase.app', //!! Make sure no charecter is in the url link after .app  make sure the url is not like .app/ or anything should not be after the .app
+        'shoppinglist-72341-default-rtdb.asia-southeast1.firebasedatabase.app', //!!Veryimp error--- Make sure no charecter is in the url link after .app 
+        ///!! make sure the url is not like .app/ or anything should not be after the .app
          //!!! Make sure you copy the correct url else your data will not get pushed into the firebase server
         'shoppinglist.json');
    final response = await http.post(url,headers: {
