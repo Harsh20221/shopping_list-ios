@@ -34,7 +34,19 @@ class _GroceryListState extends State<GroceryList> {
     ///!!! VERY IMPORTANT -- MAKE SURE TO FORMAT THE LINK IN THIS WAY OR ELSE YOU WILL FACE A VARIETY OF ERRORS
     ////!!!!Make sure nothing is before the word 'shoppinglist' there should not be https:// before link and / should not be after .app at the last of the link and also make sure the name should be 'shoppinglist.json' and not 'shopping_list.json'
     final response = await http.get(url);
-  if(response.statusCode>=400){
+    if (response.body=='null') { ///!!! Make sure to write this line of code to handle the error in this loaditems function and in this particular spot
+      setState(() {
+        Text('No Items Added Yet'); //? Here we are displaying a message if there are no items added yet
+      });
+    }
+    setState(() {
+      isloading = false; //? Here we are setting the isloading to false to stop the loading screen
+      return;
+    });
+
+
+
+  if(response.statusCode>=400){  //? Here we are checking if the status code is greater than 400 then we will display an error message status code 400 means the request was not successful
        setState(() {
          error  = 'Cannot Fetch Data Please try Again ';
        });  
@@ -57,12 +69,7 @@ class _GroceryListState extends State<GroceryList> {
       _groceryitems = loadedItems;
       isloading=false;
     });
-if(response.body=='null'){
-setState(() {
-  isloading=false;
-});
-
-  }}
+}
 
   void _removeitem (GroceryItem item) async{
     final index = groceryItems.indexOf(item); //?Here we are storing the index of the item to be removed
@@ -137,7 +144,7 @@ setState(() {
 
     }
     if(error!=null){
-      content= Text('Failed to fetch Data , Please Try AGain Later ');
+      content= Text('Failed to fetch Data , Please Try Again Later ');
     }
       return   Scaffold(
       appBar: AppBar(
