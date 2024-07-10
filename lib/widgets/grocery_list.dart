@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shopping_list/data/categories.dart';
+import 'package:shopping_list/data/dummy_items.dart';
 import 'package:shopping_list/widgets/new_item.dart';
 import 'package:shopping_list/models/grocery_item.dart';
 
@@ -17,6 +18,7 @@ class GroceryList extends StatefulWidget {
 
 class _GroceryListState extends State<GroceryList> {
   var isloading = true;
+  String?error;
   List<GroceryItem> _groceryitems =
       []; //!!! Make sure to store the grocery items entered by user in this list
   @override
@@ -32,7 +34,11 @@ class _GroceryListState extends State<GroceryList> {
     ///!!! VERY IMPORTANT -- MAKE SURE TO FORMAT THE LINK IN THIS WAY OR ELSE YOU WILL FACE A VARIETY OF ERRORS
     ////!!!!Make sure nothing is before the word 'shoppinglist' there should not be https:// before link and / should not be after .app at the last of the link and also make sure the name should be 'shoppinglist.json' and not 'shopping_list.json'
     final response = await http.get(url);
-
+  if(response.statusCode>=400){
+       setState(() {
+         error  = 'Cannot Fetch Data Please try Again ';
+       });  
+      }
     ///!!!!Make sure you await the response elsse it will give error of getter body
     final Map<String, dynamic> listdata = json.decode(response.body);
     final List<GroceryItem> loadedItems = [];
@@ -47,15 +53,26 @@ class _GroceryListState extends State<GroceryList> {
           quantity: item.value['quantity'],
           name: item.value['name']));
     }
+
     setState(() {
       _groceryitems = loadedItems;
       isloading=false;
     });
   }
 
-  void _removeitem(GroceryItem item) {
+  void _removeitem (GroceryItem item) async{
+    final index = groceryItems.indexOf(item); //?Here we are storing the index of the item to be removed
     ///*** This Void Function wll help us dismiss list items throug swipe  */
+  final url =  Uri.https('shoppinglist-72341-default-rtdb.asia-southeast1.firebasedatabase.app','shoppinglist${item.id}.json'); //? Here we are storing the url of the item to be removed along with the id of the item
+   final response = await http.delete(url); //? Here we are deleting the item from the server
+   if(response.statusCode>=404){ //? Here we are checking if the status code is greater than 404 then we will return the item back to the list
     setState(() {
+     const Text('Failed to delete item'); //? Here we are displaying a message if the item is not deleted
+      _groceryitems.insert(index, item);
+    });
+   }
+
+    setState(() { ///// Whenever we are updating the UI we use setState that's why we have written setState here because we are updating Ui here
       ///!!! Very important to enclose this remove item inside setState else the items will not get actually removed and will give us errors
       _groceryitems.remove(item);
     });
@@ -111,6 +128,12 @@ class _GroceryListState extends State<GroceryList> {
       ); //? Here leading will display a little Category Icon for all the Categories
 
     }
+    if(error!=null){
+      content= Text('Failed to fetch Data , Please Try AGain Later ');
+    }
+
+
+
       return   Scaffold(
       appBar: AppBar(
         title: const Text("Your Groceriers"),

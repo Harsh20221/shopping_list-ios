@@ -56,7 +56,7 @@ class _NewItemState extends State<NewItem> {
           'quantity': _enteredQuantity,
           'category': _selectedcategories?.title,
         }));
-
+    
     final Map<String, dynamic> resdata = json.decode(response.body);
     if (!context.mounted) {
       //?The line if (!context.mounted) { return; } was added to your code
