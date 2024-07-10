@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         // Maintains dark theme settings from previous version
         // ... (refer to the previous response for dark theme settings)
       ),
-      themeMode: ThemeMode.system, // Use system theme preference
+      themeMode: ThemeMode.system, ///Vimp---- Use system theme preference
       home: const GroceryList(),
     );
   }
