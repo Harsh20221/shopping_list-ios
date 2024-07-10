@@ -25,16 +25,17 @@ void initState(){
   _loaditems();
 }
 void _loaditems() async {
-  final url = Uri.https('shoppinglist-72341-default-rtdb.asia-southeast1.firebasedatabase.app','shopping-list.json');
+  final url = Uri.https('shoppinglist-72341-default-rtdb.asia-southeast1.firebasedatabase.app','shoppinglist.json');///!!! VERY IMPORTANT -- MAKE SURE TO FORMAT THE LINK IN THIS WAY OR ELSE YOU WILL FACE A VARIETY OF ERRORS
+  ////!!!!Make sure nothing is before the word 'shoppinglist' there should not be https:// before link and / should not be after .app at the last of the link and also make sure the name should be 'shoppinglist.json' and not 'shopping_list.json'
    final response = await http.get(url); ///!!!!Make sure you await the response elsse it will give error of getter body 
    final Map<String,dynamic> listdata =  json.decode(response.body);
-   final List <GroceryItem> _loadeditems = [];
+  final List <GroceryItem> loadedItems = [];
    for( final item in listdata.entries ){
     final category= categories.entries.firstWhere((catItem)=>catItem.value.title==item.value['category']).value;
-    _loadeditems.add(GroceryItem(id: item.key, category: category, quantity: item.value['quantity'], name: item.value['name']));
+    loadedItems.add(GroceryItem(id: item.key, category: category, quantity: item.value['quantity'], name: item.value['name']));
    }
    setState(() {
-     _groceryitems=_loadeditems;
+     _groceryitems= loadedItems;
    });
 }
 
@@ -49,16 +50,18 @@ void _loaditems() async {
   }
 
   void _addItem() async {
-    final newItem = await Navigator.of(context)
+   await Navigator.of(context)
         .push<GroceryItem>(//!! Here This line newItem=await Navigator.....
             ///!!will be responsible for navigating to next screen and
             ///! will also hold the data  Entered in the next screen
             MaterialPageRoute(builder: (ctx) => const NewItem()));
-    if (newItem == null) {
+   /*  if (newItem == null) {
       return;}
     setState(() {
       _groceryitems.add(newItem);
-    });
+    }); */
+    _loaditems();
+
   }
 
   @override
