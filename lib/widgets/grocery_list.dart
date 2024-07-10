@@ -1,5 +1,9 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shopping_list/data/categories.dart';
+import 'package:shopping_list/models/category.dart';
 import 'package:shopping_list/widgets/new_item.dart';
 import 'package:shopping_list/models/grocery_item.dart';
 
@@ -13,8 +17,28 @@ class GroceryList extends StatefulWidget {
 }
 
 class _GroceryListState extends State<GroceryList> {
-  final List<GroceryItem> _groceryitems =
+ List<GroceryItem> _groceryitems =
       []; //!!! Make sure to store the grocery items entered by user in this list
+@override
+void initState(){
+  super.initState();
+  _loaditems();
+}
+void _loaditems() async {
+  final url = Uri.https('shoppinglist-72341-default-rtdb.asia-southeast1.firebasedatabase.app','shopping-list.json');
+   final response = await http.get(url); ///!!!!Make sure you await the response elsse it will give error of getter body 
+   final Map<String,dynamic> listdata =  json.decode(response.body);
+   final List <GroceryItem> _loadeditems = [];
+   for( final item in listdata.entries ){
+    final category= categories.entries.firstWhere((catItem)=>catItem.value.title==item.value['category']).value;
+    _loadeditems.add(GroceryItem(id: item.key, category: category, quantity: item.value['quantity'], name: item.value['name']));
+   }
+   setState(() {
+     _groceryitems=_loadeditems;
+   });
+}
+
+
 
   void _removeitem(GroceryItem item) {
     ///*** This Void Function wll help us dismiss list items throug swipe  */
@@ -31,9 +55,7 @@ class _GroceryListState extends State<GroceryList> {
             ///! will also hold the data  Entered in the next screen
             MaterialPageRoute(builder: (ctx) => const NewItem()));
     if (newItem == null) {
-      return;
-    }
-
+      return;}
     setState(() {
       _groceryitems.add(newItem);
     });
